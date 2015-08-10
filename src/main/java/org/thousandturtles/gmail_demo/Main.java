@@ -1,7 +1,5 @@
 package org.thousandturtles.gmail_demo;
 
-import java.util.Scanner;
-
 /**
  * Created by Chiaki Chikame on 8/10/15.
  * <p>
@@ -17,37 +15,13 @@ import java.util.Scanner;
  */
 class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String userName;
-        String password;
-        String target;
+        MailInfoRetriever retriever = new CLIMailInfoRetriever();
+        MailInfo mailInfo = retriever.retrieveMailInfo();
 
-        System.out.print("Username of GMail:");
-        if (scanner.hasNextLine()) {
-            userName = scanner.nextLine();
-        } else {
-            System.out.println("Please specify username of GMail");
-            return;
-        }
-
-        System.out.print("Password of GMail:");
-        if (scanner.hasNextLine()) {
-            password = scanner.nextLine();
-        } else {
-            System.out.println("Please specify password of GMail");
-            return;
-        }
-
-        System.out.print("Address of the one who receive the mail:");
-        if (scanner.hasNextLine()) {
-            target = scanner.nextLine();
-        } else {
-            System.out.println("Please specify mail receiver");
-            return;
-        }
-
-        System.out.printf("Username: %s%n", userName);
-        System.out.printf("Password: %c***%c%n", password.charAt(0), password.charAt(password.length() - 1));
-        System.out.printf("Mail target: %s%n", target);
+        System.out.printf("Username: %s%n", mailInfo.getUsername());
+        System.out.printf("Password: %c***%c%n"
+                , mailInfo.getPassword().charAt(0)
+                , mailInfo.getPassword().charAt(mailInfo.getPassword().length() - 1));
+        System.out.printf("Mail target: %s%n", mailInfo.getMailTo());
     }
 }
