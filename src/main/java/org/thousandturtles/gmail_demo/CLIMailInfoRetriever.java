@@ -17,20 +17,32 @@ class CLIMailInfoRetriever implements MailInfoRetriever {
         Scanner scanner = new Scanner(System.in);
         MailInfo mi = new MailInfo();
 
-        System.out.print("Username of GMail:");
+        System.out.print("Use SMTP server (Y/N)?");
         if (scanner.hasNextLine()) {
-            mi.setUsername(scanner.nextLine());
-        } else {
-            System.out.println("Please specify username of GMail");
-            return null;
+            String useSMTP = scanner.nextLine().toUpperCase();
+            if (useSMTP.equals("Y") || useSMTP.equals("YES")) {
+                mi.setNoAuth(false);
+            } else {
+                mi.setNoAuth(true);
+            }
         }
 
-        System.out.print("Password of GMail:");
-        if (scanner.hasNextLine()) {
-            mi.setPassword(scanner.nextLine());
-        } else {
-            System.out.println("Please specify password of GMail");
-            return null;
+        if (!mi.isNoAuth()) {
+            System.out.print("Username of GMail:");
+            if (scanner.hasNextLine()) {
+                mi.setUsername(scanner.nextLine());
+            } else {
+                System.out.println("Please specify username of GMail");
+                return null;
+            }
+
+            System.out.print("Password of GMail:");
+            if (scanner.hasNextLine()) {
+                mi.setPassword(scanner.nextLine());
+            } else {
+                System.out.println("Please specify password of GMail");
+                return null;
+            }
         }
 
         System.out.print("Address of the one who receive the mail:");

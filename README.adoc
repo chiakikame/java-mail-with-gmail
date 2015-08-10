@@ -9,9 +9,40 @@ You need a Google account to run this application.
 Before running, go to https://www.google.com/settings/security/lesssecureapps and turn on
 `Access for less secure apps` option.
 
-== Other GMail options
+== Other mail server options
 
 For detail see: https://support.google.com/a/answer/176600?hl=en
 
 For short, maybe you can send email with `aspmx.l.google.com` if all
-people receiving your mail will use GMail.
+people receiving your mail will use GMail. However, this option is likely to
+fail. (As I tested it)
+
+The error I got is as follows:
+
+----
+org.apache.commons.mail.EmailException: Sending the email to the following server failed : aspmx.l.google.com:25
+	at org.apache.commons.mail.Email.sendMimeMessage(Email.java:1421)
+	at org.apache.commons.mail.Email.send(Email.java:1448)
+	at org.thousandturtles.gmail_demo.Main.main(Main.java:52)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:140)
+Caused by: com.sun.mail.smtp.SMTPSendFailedException:
+550-5.7.1 [*.*.*.*      12] Our system has detected that this message is
+550-5.7.1 likely unsolicited mail. To reduce the amount of spam sent to Gmail,
+550-5.7.1 this message has been blocked. Please visit
+550 5.7.1  https://support.google.com/mail/answer/188131 for more information. gl11si5678106pbd.183 - gsmtp
+
+	at com.sun.mail.smtp.SMTPTransport.issueSendCommand(SMTPTransport.java:2202)
+	at com.sun.mail.smtp.SMTPTransport.finishData(SMTPTransport.java:1980)
+	at com.sun.mail.smtp.SMTPTransport.sendMessage(SMTPTransport.java:1197)
+	at javax.mail.Transport.send0(Transport.java:254)
+	at javax.mail.Transport.send(Transport.java:124)
+	at org.apache.commons.mail.Email.sendMimeMessage(Email.java:1411)
+	... 7 more
+----
+
+Or, you may use `aspirin`, an embedded SMTP mail server. However, you're likely encounter problem similar to
+above one.

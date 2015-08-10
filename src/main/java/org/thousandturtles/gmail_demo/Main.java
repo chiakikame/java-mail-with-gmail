@@ -22,22 +22,30 @@ class Main {
         MailInfoRetriever retriever = new CLIMailInfoRetriever();
         MailInfo mailInfo = retriever.retrieveMailInfo();
 
-        System.out.printf("Username: %s%n", mailInfo.getUsername());
-        System.out.printf("Password: %c***%c%n"
-                , mailInfo.getPassword().charAt(0)
-                , mailInfo.getPassword().charAt(mailInfo.getPassword().length() - 1));
+        if (mailInfo.isNoAuth()) {
+            System.out.println("Using No auth, mail with aspmx.l.google.com");
+        } else {
+            System.out.printf("Username: %s%n", mailInfo.getUsername());
+            System.out.printf("Password: %c***%c%n"
+                    , mailInfo.getPassword().charAt(0)
+                    , mailInfo.getPassword().charAt(mailInfo.getPassword().length() - 1));
+        }
         System.out.printf("Mail target: %s%n", mailInfo.getMailTo());
 
         try {
-            // Should grant access to low-security applications in this page:
-            // https://www.google.com/settings/security/lesssecureapps
             Email mail = new SimpleEmail();
-            mail.setHostName("smtp.gmail.com");
-            mail.setSmtpPort(465);
-            mail.setAuthentication(mailInfo.getUsername(), mailInfo.getPassword());
-            mail.setSSLOnConnect(true);
+            if (mailInfo.isNoAuth()) {
+                mail.setHostName("aspmx.l.google.com");
+                mail.setSmtpPort(25);
+                mail.setFrom("no-reply@thousandturtles.org");
+            } else {
+                mail.setHostName("smtp.gmail.com");
+                mail.setSmtpPort(465);
+                mail.setAuthentication(mailInfo.getUsername(), mailInfo.getPassword());
+                mail.setSSLOnConnect(true);
+                mail.setFrom(mailInfo.getMailer());
+            }
             mail.setCharset("UTF-8");
-            mail.setFrom(mailInfo.getMailer());
             mail.addTo(mailInfo.getMailTo(), "White Mouse");
             mail.setSubject("測試郵件");
             mail.setMsg("這是測試郵件！\nThis is a test mail!\n");

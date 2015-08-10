@@ -13,6 +13,15 @@ class MailInfo {
     private String username;
     private String password;
     private String mailTo;
+    private boolean noAuth;
+
+    public boolean isNoAuth() {
+        return noAuth;
+    }
+
+    public void setNoAuth(boolean noAuth) {
+        this.noAuth = noAuth;
+    }
 
     public String getMailer() {
         return username + "@gmail.com";
