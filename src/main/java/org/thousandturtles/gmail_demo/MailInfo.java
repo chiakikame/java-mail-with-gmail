@@ -14,6 +14,10 @@ class MailInfo {
     private String password;
     private String mailTo;
 
+    public String getMailer() {
+        return username + "@gmail.com";
+    }
+
     public String getUsername() {
         return username;
     }
